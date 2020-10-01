@@ -23,13 +23,12 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
     EditText latitude;
     EditText longitude;
-    String urlWebService;
+    String urlWebService, urlWebServicebase;
     HttpURLConnection co;
     URL url;
     InputStream inputStream = null;
     BufferedReader br;
     JSONArray jsonArray;
-    AsyncTasks asyncTasks;
     TextView results;
 
     @Override
@@ -38,16 +37,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         latitude = (EditText) findViewById(R.id.ET_Lat);
         longitude = (EditText) findViewById(R.id.ET_Long);
-        urlWebService ="http://192.168.43.182/villesdefrance/accessville.php";
-        asyncTasks = new AsyncTasks();
+        urlWebServicebase ="http://192.168.43.182/villesdefrance/accessville.php";
         results = (TextView) findViewById(R.id.TV_Results);
     }
     public void Search(View view){
         //quand il n'y a qu'un seul thread multitache
         //policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         //StrictMode.setThreadPolicy(policy);
-        urlWebService = urlWebService + "?lat=" + latitude.getText() + "&long=" + longitude.getText();
+        urlWebService = urlWebServicebase + "?lat=" + latitude.getText() + "&long=" + longitude.getText();
         results.setText("les communes suivantes sont les plus proches : ");
+        AsyncTasks asyncTasks = new AsyncTasks();
         asyncTasks.execute();
     }
     private String getServerDataJSON(String urlWebService){
